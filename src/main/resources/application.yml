@@ -6,4 +6,3 @@ spring:
       enabled: false
   freemarker:
     cache: false
-
