@@ -1,4 +1,6 @@
 spring:
+  jwt:
+    secret: govlep1@$&
   devtools:
     livereload:
       enabled: true
