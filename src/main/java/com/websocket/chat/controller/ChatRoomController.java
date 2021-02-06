@@ -18,7 +18,9 @@ public class ChatRoomController {
     // 모든 채팅방 목록 반환(메인 페이지)
     @GetMapping("/room")
     public List<ChatRoom> room() {
-        return chatRoomRepository.findAllRoom();
+        List<ChatRoom> chatRooms = chatRoomRepository.findAllRoom();
+        chatRooms.stream().forEach(room -> room.setUserCount(chatRoomRepository.getUserCount(room.getRoomId())));
+        return chatRooms;
     }
     // 채팅방 생성
     @PostMapping("/room")

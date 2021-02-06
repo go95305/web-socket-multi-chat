@@ -18,6 +18,7 @@ public class ChatRoom implements Serializable {
     private String name; // 방 이름
     private String publisher;// 방 개설자
     private long likeCount; //방 좋아요 개수
+    private long userCount;
     private List<String> hashtagList;
 
     public static ChatRoom create(String name, String publisher, List<String> hashtagList) {
