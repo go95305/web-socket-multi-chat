@@ -21,13 +21,21 @@ public class ChatRoomController {
     }
     // 모든 채팅방 목록 반환(메인 페이지)
     @GetMapping("/rooms")
+    @ResponseBody
     public List<ChatRoom> room() {
         List<ChatRoom> chatRooms = chatRoomRepository.findAllRoom();
         chatRooms.stream().forEach(room -> room.setUserCount(chatRoomRepository.getUserCount(room.getRoomId())));
+        System.out.println("===============");
         return chatRooms;
+    }
+    @GetMapping("/room/enter/{roomId}")
+    public String roomDetail(Model model, @PathVariable String roomId) {
+        model.addAttribute("roomId", roomId);
+        return "/chat/roomdetail";
     }
     // 채팅방 생성
     @PostMapping("/room")
+    @ResponseBody
     public ChatRoom createRoom(@RequestBody ChatRoom chatRoom) {
         return chatRoomRepository.createChatRoom(chatRoom);
     }

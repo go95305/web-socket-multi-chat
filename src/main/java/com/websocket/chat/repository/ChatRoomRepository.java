@@ -29,7 +29,9 @@ public class ChatRoomRepository {
 
     // 모든 채팅방 조회
     public List<ChatRoom> findAllRoom() {
-        return hashOpsChatRoom.values(CHAT_ROOMS);
+        List<ChatRoom> chatRoomList=hashOpsChatRoom.values(CHAT_ROOMS);
+        System.out.println(chatRoomList.size());
+        return chatRoomList;
     }
 
     // 특정 채팅방 조회
