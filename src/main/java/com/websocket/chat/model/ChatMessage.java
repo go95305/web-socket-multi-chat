@@ -1,4 +1,4 @@
-package com.websocket.chat.dto;
+package com.websocket.chat.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ChatMessage {
     public enum MessageType{
-        ENTER,TALK
+        ENTER,TALK,QUIT
     }
     private MessageType type;
     private String roomId;

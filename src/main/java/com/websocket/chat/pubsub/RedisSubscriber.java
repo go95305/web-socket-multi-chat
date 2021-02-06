@@ -1,7 +1,7 @@
 package com.websocket.chat.pubsub;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.websocket.chat.dto.ChatMessage;
+import com.websocket.chat.model.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
@@ -26,6 +26,7 @@ public class RedisSubscriber implements MessageListener {
     public void onMessage(Message message, byte[] pattern) {
         try {
             // redis에서 발행된 데이터를 받아 deserialize
+            //roomId:this.roomId, sender:this.sender, message:this.message
             String publishMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
             // ChatMessage 객채로 맵핑
             ChatMessage roomMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
