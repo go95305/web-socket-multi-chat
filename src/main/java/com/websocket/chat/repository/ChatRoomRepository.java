@@ -1,6 +1,6 @@
 package com.websocket.chat.repository;
 
-import com.websocket.chat.dto.ChatRoom;
+import com.websocket.chat.model.entity.ChatRoom;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ValueOperations;
@@ -36,8 +36,10 @@ public class ChatRoomRepository {
     }
 
     // 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
-    public ChatRoom createChatRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
+    public ChatRoom createChatRoom(String name,String publisher) {
+//        ChatRoom chatRoom = ChatRoom.create(name,publisher);
+        ChatRoom chatRoom = new ChatRoom();
+
         hashOpsChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }

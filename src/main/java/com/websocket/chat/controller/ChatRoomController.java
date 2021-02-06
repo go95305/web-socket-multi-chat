@@ -1,7 +1,7 @@
 package com.websocket.chat.controller;
 
-import com.websocket.chat.dto.ChatRoom;
-import com.websocket.chat.dto.LoginInfo;
+import com.websocket.chat.model.entity.ChatRoom;
+import com.websocket.chat.model.dto.LoginInfo;
 import com.websocket.chat.repository.ChatRoomRepository;
 import com.websocket.chat.service.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +36,8 @@ public class ChatRoomController {
 
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name) {
-        return chatRoomRepository.createChatRoom(name);
+    public ChatRoom createRoom(@RequestParam String name, @RequestParam String publisher) {
+        return chatRoomRepository.createChatRoom(name, publisher);
     }
 
     @GetMapping("/room/enter/{roomId}")
@@ -52,11 +52,4 @@ public class ChatRoomController {
         return chatRoomRepository.findRoomById(roomId);
     }
 
-    @GetMapping("/user")
-    @ResponseBody
-    public LoginInfo getUserInfo() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
-        return LoginInfo.builder().name(name).token(jwtTokenProvider.generateToken(name)).build();
-    }
 }

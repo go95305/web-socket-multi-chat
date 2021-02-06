@@ -1,6 +1,6 @@
 package com.websocket.chat.service;
 
-import com.websocket.chat.dto.ChatMessage;
+import com.websocket.chat.model.dto.ChatMessage;
 import com.websocket.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
