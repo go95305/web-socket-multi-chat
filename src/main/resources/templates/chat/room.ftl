@@ -19,20 +19,22 @@
             <h3>채팅방 리스트</h3>
         </div>
         <div class="col-md-6 text-right">
-            <a class="btn btn-primary btn-sm" href="/logout">로그아웃</a>
+            <a class="btn btn-primary btn-sm" href="/chat/room">방 나가기</a>
         </div>
     </div>
     <div class="input-group">
         <div class="input-group-prepend">
             <label class="input-group-text">방제목</label>
         </div>
-        <input type="text" class="form-control" v-model="room_name" v-on:keyup.enter="createRoom">
+        <input type="text" class="form-control" v-model="room_name">
+        <input type="text" class="form-control" v-model="hashtag">
         <div class="input-group-append">
             <button class="btn btn-primary" type="button" @click="createRoom">채팅방 개설</button>
         </div>
     </div>
     <ul class="list-group">
-        <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId" v-on:click="enterRoom(item.roomId, item.name)">
+        <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId"
+            v-on:click="enterRoom(item.roomId, item.name)">
             <h6>{{item.name}} <span class="badge badge-info badge-pill">{{item.userCount}}</span></h6>
         </li>
     </ul>
@@ -44,44 +46,50 @@
     var vm = new Vue({
         el: '#app',
         data: {
-            room_name : '',
-            chatrooms: [
-            ]
+            room_name: '',
+            publisher: 'koyuchang',
+            hashtag: '',
+            chatrooms: []
         },
         created() {
             this.findAllRoom();
         },
         methods: {
-            findAllRoom: function() {
+            findAllRoom: function () {
                 axios.get('/chat/rooms').then(response => {
                     // prevent html, allow json array
-                    if(Object.prototype.toString.call(response.data) === "[object Array]")
+                    if (Object.prototype.toString.call(response.data) === "[object Array]")
                         console.log(response.data);
-                        this.chatrooms = response.data;
+                    this.chatrooms = response.data;
                 });
             },
-            createRoom: function() {
-                if("" === this.room_name) {
+            createRoom: function () {
+                if ("" === this.room_name) {
                     alert("방 제목을 입력해 주십시요.");
                     return;
                 } else {
-                    var params = new URLSearchParams();
-                    params.append("name",this.room_name);
-                    axios.post('/chat/room', params)
+                    axios.post('/chat/room', {
+                        name: this.room_name,
+                        publisher: this.publisher,
+                        hashtag: this.hashtag
+                    })
                         .then(
                             response => {
-                                alert(response.data.name+"방 개설에 성공하였습니다.")
+                                alert(response.data.name + "방 개설에 성공하였습니다.")
                                 this.room_name = '';
+                                this.hashtag = '';
                                 this.findAllRoom();
                             }
                         )
-                        .catch( response => { alert("채팅방 개설에 실패하였습니다."); } );
+                        .catch(response => {
+                            alert("채팅방 개설에 실패하였습니다.");
+                        });
                 }
             },
-            enterRoom: function(roomId, roomName) {
-                localStorage.setItem('wschat.roomId',roomId);
-                localStorage.setItem('wschat.roomName',roomName);
-                location.href="/chat/room/enter/"+roomId;
+            enterRoom: function (roomId, roomName) {
+                localStorage.setItem('wschat.roomId', roomId);
+                localStorage.setItem('wschat.roomName', roomName);
+                location.href = "/chat/room/enter/" + roomId;
             }
         }
     });

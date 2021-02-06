@@ -20,10 +20,6 @@
         <div class="col-md-6">
             <h4>{{roomName}} <span class="badge badge-info badge-pill">{{userCount}}</span></h4>
         </div>
-        <div class="col-md-6 text-right">
-            <a class="btn btn-primary btn-sm" href="/logout">로그아웃</a>
-            <a class="btn btn-info btn-sm" href="/chat/room">채팅방 나가기</a>
-        </div>
     </div>
     <div class="input-group">
         <div class="input-group-prepend">
@@ -58,33 +54,36 @@
             message: '',
             messages: [],
             token: '',
-            userCount: 0
+            userCount: 0,
+            nickname:'koyuchang'
         },
         created() {
             this.roomId = localStorage.getItem('wschat.roomId');
             this.roomName = localStorage.getItem('wschat.roomName');
             var _this = this;
-            axios.get('/chat/user').then(response => {
-                _this.token = response.data.token;
-                ws.connect({"token":_this.token}, function(frame) {
-                    ws.subscribe("/sub/chat/room/"+_this.roomId, function(message) {
-                        var recv = JSON.parse(message.body);
-                        _this.recvMessage(recv);
-                    });
-                }, function(error) {
-                    alert("서버 연결에 실패 하였습니다. 다시 접속해 주십시요.");
-                    location.href="/chat/room";
+            ws.connect({}, function (frame) {
+                ws.subscribe("/sub/chat/room/" + _this.roomId, function (message) {
+                    var recv = JSON.parse(message.body);
+                    _this.recvMessage(recv);
                 });
+            }, function (error) {
+                alert("서버 연결에 실패 하였습니다. 다시 접속해 주십시요.");
+                location.href = "/chat/room";
             });
+
         },
         methods: {
-            sendMessage: function(type) {
-                ws.send("/pub/chat/message", {"token":this.token}, JSON.stringify({type:type, roomId:this.roomId, message:this.message}));
+            sendMessage: function (type) {
+                ws.send("/pub/chat/message", {"nickname": this.nickname}, JSON.stringify({
+                    type: type,
+                    roomId: this.roomId,
+                    message: this.message
+                }));
                 this.message = '';
             },
-            recvMessage: function(recv) {
+            recvMessage: function (recv) {
                 this.userCount = recv.userCount;
-                this.messages.unshift({"type":recv.type,"sender":recv.sender,"message":recv.message})
+                this.messages.unshift({"type": recv.type, "sender": recv.sender, "message": recv.message})
             }
         }
     });

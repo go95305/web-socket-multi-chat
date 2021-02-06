@@ -15,11 +15,15 @@ public class ChatRoom implements Serializable {
     private String roomId; //채팅방 ID
     private String name; //채팅방 이름
     private long userCount; // 채팅방 인원수
+    private String hashtag;
+    private String publisher;
 
-    public static ChatRoom create(String name) {
+    public static ChatRoom create(String name,String publisher,String hashtag) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
         chatRoom.name = name;
+        chatRoom.publisher=publisher;
+        chatRoom.hashtag=hashtag;
         return chatRoom;
     }
 }
