@@ -1,4 +1,6 @@
 spring:
+  jwt:
+    secret: yuchang
   devtools:
     livereload:
       enabled: true
