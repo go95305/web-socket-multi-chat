@@ -26,7 +26,9 @@
         <div class="input-group-prepend">
             <label class="input-group-text">방제목</label>
         </div>
-        <input type="text" class="form-control" v-model="room_name" v-on:keyup.enter="createRoom">
+        <input type="text" class="form-control" v-model="room_name">
+        <input type="text" class="form-control" v-model="publisher">
+        <input type="text" class="form-control" v-model="hashtag" >
         <div class="input-group-append">
             <button class="btn btn-primary" type="button" @click="createRoom">채팅방 개설</button>
         </div>
@@ -45,6 +47,8 @@
         el: '#app',
         data: {
             room_name : '',
+            publisher:'',
+            hashtag:[],
             chatrooms: [
             ]
         },
@@ -64,13 +68,17 @@
                     alert("방 제목을 입력해 주십시요.");
                     return;
                 } else {
-                    var params = new URLSearchParams();
-                    params.append("name",this.room_name);
-                    axios.post('/chat/room', params)
+                    axios.post('/chat/room',{
+                        name: this.room_name,
+                        publisher: this.publisher,
+                        hashtag: this.hashtag,
+                    })
                         .then(
                             response => {
                                 alert(response.data.name+"방 개설에 성공하였습니다.")
                                 this.room_name = '';
+                                this.publisher = '';
+                                this.hashtag = '';
                                 this.findAllRoom();
                             }
                         )

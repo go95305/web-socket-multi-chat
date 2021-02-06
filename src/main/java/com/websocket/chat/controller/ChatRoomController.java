@@ -10,13 +10,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 @RequestMapping("/chat")
 public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
-    // 모든 채팅방 목록 반환(메인 페이지)
     @GetMapping("/room")
+    public String rooms() {
+        return "/chat/room";
+    }
+    // 모든 채팅방 목록 반환(메인 페이지)
+    @GetMapping("/rooms")
     public List<ChatRoom> room() {
         List<ChatRoom> chatRooms = chatRoomRepository.findAllRoom();
         chatRooms.stream().forEach(room -> room.setUserCount(chatRoomRepository.getUserCount(room.getRoomId())));

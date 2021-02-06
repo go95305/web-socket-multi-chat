@@ -19,14 +19,14 @@ public class ChatRoom implements Serializable {
     private String publisher;// 방 개설자
     private long likeCount; //방 좋아요 개수
     private long userCount;
-    private List<String> hashtagList;
+    private String hashtag;
 
-    public static ChatRoom create(String name, String publisher, List<String> hashtagList) {
+    public static ChatRoom create(String name, String publisher, String hashtag) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
         chatRoom.name = name;
         chatRoom.publisher = publisher;
-        chatRoom.hashtagList = hashtagList;
+        chatRoom.hashtag = hashtag;
         return chatRoom;
     }
 }
