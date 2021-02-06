@@ -1,9 +1,7 @@
 package com.websocket.chat.controller;
 
 import com.websocket.chat.model.ChatRoom;
-import com.websocket.chat.model.LoginInfo;
 import com.websocket.chat.repository.ChatRoomRepository;
-import com.websocket.chat.service.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +14,6 @@ import java.util.List;
 @RequestMapping("/chat")
 public class ChatRoomController {
 
-    private final JwtTokenProvider jwtTokenProvider;
     private final ChatRoomRepository chatRoomRepository;
     @GetMapping("/room")
     public String rooms() {
@@ -26,9 +23,7 @@ public class ChatRoomController {
     @GetMapping("/rooms")
     @ResponseBody
     public List<ChatRoom> room() {
-        List<ChatRoom> chatRooms = chatRoomRepository.findAllRoom();
-        chatRooms.stream().forEach(room -> room.setUserCount(chatRoomRepository.getUserCount(room.getRoomId())));
-        return chatRooms;
+        return chatRoomRepository.findAllRoom();
     }
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {

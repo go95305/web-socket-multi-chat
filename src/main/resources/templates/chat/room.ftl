@@ -35,7 +35,7 @@
     </div>
     <ul class="list-group">
         <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId"
-            v-on:click="enterRoom(item.roomId, item.name)">
+            v-on:click="enterRoom(item.roomId)">
             <h6>{{item.name}} <span class="badge badge-info badge-pill">{{item.userCount}}</span></h6>
         </li>
     </ul>
@@ -89,10 +89,11 @@
                         });
                 }
             },
-            enterRoom: function (roomId, roomName) {
+            enterRoom: function (roomId) {
+
                 localStorage.setItem('wschat.roomId', roomId);
-                localStorage.setItem('wschat.roomName', roomName);
-                location.href = "/chat/room/enter/" + roomId;
+                localStorage.setItem('wschat.roomName', roomName);//채팅 작성자 보내주세요  이거 대신에에
+               location.href = "/chat/room/enter/" + roomId;
             }
         }
     });

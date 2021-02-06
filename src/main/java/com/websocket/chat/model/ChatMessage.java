@@ -8,21 +8,21 @@ import lombok.Setter;
 @Setter
 public class ChatMessage {
 
-    public ChatMessage() {
-    }
-
-    @Builder
-    public ChatMessage(MessageType type, String roomId, String sender, String message, long userCount) {
-        this.type = type;
-        this.roomId = roomId;
-        this.sender = sender;
-        this.message = message;
-        this.userCount = userCount;
-    }
+//    public ChatMessage() {
+//    }
+//
+//    @Builder
+//    public ChatMessage(MessageType type, String roomId, String sender, String message, long userCount) {
+//        this.type = type;
+//        this.roomId = roomId;
+//        this.sender = sender;
+//        this.message = message;
+//        this.userCount = userCount;
+//    }
 
     // 메시지 타입 : 입장, 퇴장, 채팅
     public enum MessageType {
-        ENTER, QUIT, TALK
+        ENTER,TALK
     }
 
     private MessageType type; // 메시지 타입
