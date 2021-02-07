@@ -5,6 +5,8 @@ import com.websocket.chat.repository.ChatRoomRepository;
 import com.websocket.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
@@ -13,6 +15,8 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 @Controller
 public class ChatController {
+
+    private final static Logger LOG = LoggerFactory.getLogger(ChatController.class);
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatService chatService;

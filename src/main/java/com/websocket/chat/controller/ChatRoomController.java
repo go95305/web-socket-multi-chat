@@ -21,6 +21,7 @@ public class ChatRoomController {
         return "/chat/room";
     }
 
+    //실채훈 메인페이지(모든 채팅방 리스트)
     @GetMapping("/rooms")
     @ResponseBody
     public List<ChatRoom> room() {
@@ -29,18 +30,21 @@ public class ChatRoomController {
         return chatRooms;
     }
 
+    //채팅방 생성
     @PostMapping("/room")
     @ResponseBody
     public ChatRoom createRoom(@RequestBody ChatRoom chatRoom) {
         return chatRoomRepository.createChatRoom(chatRoom);
     }
 
+    //채팅방 입장
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable String roomId) {
         model.addAttribute("roomId", roomId);
         return "/chat/roomdetail";
     }
 
+    //채팅방 정보 리턴
     @GetMapping("/room/{roomId}")
     @ResponseBody
     public ChatRoom roomInfo(@PathVariable String roomId) {

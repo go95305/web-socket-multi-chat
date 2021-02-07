@@ -20,6 +20,9 @@
         <div class="col-md-6">
             <h4>{{roomName}} <span class="badge badge-info badge-pill">{{userCount}}</span></h4>
         </div>
+        <div class="col-md-6 text-right">
+            <a class="btn btn-info btn-sm" href="/chat/room">채팅방 나가기</a>
+        </div>
     </div>
     <div class="input-group">
         <div class="input-group-prepend">
@@ -61,7 +64,7 @@
             this.roomId = localStorage.getItem('wschat.roomId');
             this.roomName = localStorage.getItem('wschat.roomName');
             var _this = this;
-            ws.connect({}, function (frame) {
+            ws.connect({}, function (frame) {//연결이 성공되면 채팅방을 구독
                 ws.subscribe("/sub/chat/room/" + _this.roomId, function (message) {
                     var recv = JSON.parse(message.body);
                     _this.recvMessage(recv);
