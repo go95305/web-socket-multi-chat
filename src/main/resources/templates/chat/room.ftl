@@ -26,8 +26,9 @@
         <div class="input-group-prepend">
             <label class="input-group-text">방제목</label>
         </div>
-        <input type="text" class="form-control" v-model="room_name">
-        <input type="text" class="form-control" v-model="hashtag">
+        방이름:<input type="text" class="form-control" v-model="room_name"><br/>
+        해시태그:<input type="text" class="form-control" v-model="hashtagList"><br/>
+        고정댓글<input type="text" class="form-control" v-model="fixedComment">
         <div class="input-group-append">
             <button class="btn btn-primary" type="button" @click="createRoom">채팅방 개설</button>
         </div>
@@ -36,6 +37,9 @@
         <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId"
             v-on:click="enterRoom(item.roomId, item.name)">
             <h6>방이름{{item.name}} 개설자: {{item.publisher}} <span class="badge badge-info badge-pill">{{item.userCount}}</span></h6>
+            <span class="badge badge-info badge-pill" v-for="hashtag in hashtagList" >
+                {{hashtag}}
+            </span>
         </li>
     </ul>
 </div>
@@ -48,8 +52,9 @@
         data: {
             room_name: '',
             publisher: 'koyuchang',
-            hashtag: '',
-            chatrooms: []
+            hashtagList: [],
+            chatrooms: [],
+            fixedComment:'',
         },
         created() {
             this.findAllRoom();
@@ -71,13 +76,14 @@
                     axios.post('/chat/room', {
                         name: this.room_name,
                         publisher: this.publisher,
-                        hashtag: this.hashtag
+                        hashtagList: this.hashtagList,
+                        fixedComment: this.fixedComment
                     })
                         .then(
                             response => {
                                 alert(response.data.name + "방 개설에 성공하였습니다.")
                                 this.room_name = '';
-                                this.hashtag = '';
+                                this.hashtagList = [];
                                 this.findAllRoom();
                             }
                         )
