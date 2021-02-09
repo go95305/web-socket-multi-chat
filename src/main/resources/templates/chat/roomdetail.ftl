@@ -19,10 +19,15 @@
     <div class="row">
         <div class="col-md-6">
             <h4>{{roomName}} <span class="badge badge-info badge-pill">{{userCount}}</span></h4>
+            <span class="badge badge-info badge-pill">{{likeCount}}</span>
         </div>
         <div class="col-md-6 text-right">
             <a class="btn btn-info btn-sm" href="/chat/room">채팅방 나가기</a>
         </div>
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button" @click="plusLike(this.roomId)">좋아요</button>
+        </div>
+
     </div>
     <div class="input-group">
         <div class="input-group-prepend">
@@ -58,7 +63,8 @@
             messages: [],
             token: '',
             userCount: 0,
-            nickname:'koyuchang'
+            nickname: 'koyuchang',
+            likeCount: 0,
         },
         created() {
             this.roomId = localStorage.getItem('wschat.roomId');
@@ -76,6 +82,12 @@
 
         },
         methods: {
+            plusLike: function (roomId) {
+                axios.post('/chat/room/like/' + roomId).then(response => {
+                    this.likeCount = response.data
+                    console.log(response.data)
+                })
+            },
             sendMessage: function (type) {
                 ws.send("/pub/chat/message", {"nickname": this.nickname}, JSON.stringify({
                     type: type,
@@ -85,6 +97,8 @@
                 this.message = '';
             },
             recvMessage: function (recv) {
+                this.likeCount = recv.likeCount;
+
                 this.userCount = recv.userCount;
                 this.messages.unshift({"type": recv.type, "sender": recv.sender, "message": recv.message})
             }

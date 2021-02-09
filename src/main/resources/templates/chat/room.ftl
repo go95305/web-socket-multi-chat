@@ -36,10 +36,10 @@
     <ul class="list-group">
         <li class="list-group-item list-group-item-action" v-for="item in chatrooms" v-bind:key="item.roomId"
             v-on:click="enterRoom(item.roomId, item.name)">
-            <h6>방이름{{item.name}} 개설자: {{item.publisher}} <span class="badge badge-info badge-pill">{{item.userCount}}</span></h6>
-            <span class="badge badge-info badge-pill" v-for="hashtag in hashtagList" >
-                {{hashtag}}
-            </span>
+            <h6>{{item.name}} <span class="badge badge-info badge-pill">{{item.userCount}}</span></h6>
+            <h6>방이름{{item.name}} 개설자: {{item.publisher}} <span
+                        class="badge badge-info badge-pill">{{item.userCount}}</span></h6>
+            <button class="btn btn-primary" type="button" @click="removeRoom(item.roomId)">방 삭제</button>
         </li>
     </ul>
 </div>
@@ -51,15 +51,24 @@
         el: '#app',
         data: {
             room_name: '',
+
+            publisher: '',
+            hashtag: [],
+            chatrooms: [],
             publisher: 'koyuchang',
             hashtagList: [],
             chatrooms: [],
-            fixedComment:'',
+            fixedComment: '',
         },
         created() {
             this.findAllRoom();
         },
         methods: {
+            removeRoom: function (roomId) {
+                axios.post('/chat/room/remove/' + roomId)
+                alert("방 삭제 완료"),
+                    this.findAllRoom();
+            },
             findAllRoom: function () {
                 axios.get('/chat/rooms').then(response => {
                     // prevent html, allow json array
